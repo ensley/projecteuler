@@ -39,3 +39,5 @@ canonifyURLs = true
     height = 50
     alt = "Logo"
 
+    [params.banner]
+    url = 'https://www.vintage-maps.com/31-extra_large/euler-atlas-1760.jpg'
