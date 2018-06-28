@@ -17,10 +17,42 @@ weight: -3
 
 # Explanation
 
+Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. That's the [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic). The most straightforward approach for solving this problem is to simply walk through the prime numbers less than $n = 600851475143$ and try dividing each of them into $n$. The biggest one that divides evenly is our answer.
 
+The next question is how to walk through the prime numbers. We need some method for generating primes up to $n$. Fortunately, one such method is very simple and has been known for thousands of years: the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). Start by writing out a list of integers up to $n$. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you're done, every prime between 1 and $n$ will be circled.
+
+That's it! It's a very efficient algorithm in terms of speed, particularly with R's vectorized operations eliminating the need to loop over the multiples. We can make an optimization by recognizing that we really only need a list of primes up to $n/2$, not $n$, since we care about the largest prime factor. The smallest prime is 2, so the biggest the largest prime factor could be is $n/2$.
 
 # Implementation
 
+```{r}
+sieve <- function(n) {
+  is_prime <- c(F, rep(T, n-1))
+  for (i in 2:sqrt(n)) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] <- F
+    }
+  }
+  which(is_prime)
+}
+```
+
+```{r}
+n <- 1000
+sieve(n)
+```
+
+```{r}
+segmented_sieve <- function(n, delta) {
+  sqrtn <- sqrt(n)
+  primes <- rep(NA, sqrtn)
+  m <- 1
+  while (m <= n) {
+    m <- m + delta
+    is_prime <- rep(T, delta)
+  }
+}
+```
 
 
 # Timing

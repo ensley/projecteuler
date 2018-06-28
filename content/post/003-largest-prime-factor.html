@@ -1,5 +1,4 @@
 ---
-draft: yes
 title: 'Problem 3: Largest prime factor'
 author: John Ensley
 date: '2018-06-27'
@@ -21,9 +20,42 @@ weight: -3
 </div>
 <div id="explanation" class="section level1">
 <h1>Explanation</h1>
+<p>Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. That’s the <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">fundamental theorem of arithmetic</a>. The most straightforward approach for solving this problem is to simply walk through the prime numbers less than <span class="math inline">\(n = 600851475143\)</span> and try dividing each of them into <span class="math inline">\(n\)</span>. The biggest one that divides evenly is our answer.</p>
+<p>The next question is how to walk through the prime numbers. We need some method for generating primes up to <span class="math inline">\(n\)</span>. Fortunately, one such method is very simple and has been known for thousands of years: the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a>. Start by writing out a list of integers up to <span class="math inline">\(n\)</span>. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you’re done, every prime between 1 and <span class="math inline">\(n\)</span> will be circled.</p>
+<p>That’s it! It’s a very efficient algorithm in terms of speed, particularly with R’s vectorized operations eliminating the need to loop over the multiples. We can make an optimization by recognizing that we really only need a list of primes up to <span class="math inline">\(n/2\)</span>, not <span class="math inline">\(n\)</span>, since we care about the largest prime factor. The smallest prime is 2, so the biggest the largest prime factor could be is <span class="math inline">\(n/2\)</span>.</p>
 </div>
 <div id="implementation" class="section level1">
 <h1>Implementation</h1>
+<pre class="r"><code>sieve &lt;- function(n) {
+  is_prime &lt;- c(F, rep(T, n-1))
+  for (i in 2:sqrt(n)) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] &lt;- F
+    }
+  }
+  which(is_prime)
+}</code></pre>
+<pre class="r"><code>n &lt;- 1000
+sieve(n)</code></pre>
+<pre><code>##   [1]   2   3   5   7  11  13  17  19  23  29  31  37  41  43  47  53  59
+##  [18]  61  67  71  73  79  83  89  97 101 103 107 109 113 127 131 137 139
+##  [35] 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233
+##  [52] 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337
+##  [69] 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439
+##  [86] 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557
+## [103] 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653
+## [120] 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769
+## [137] 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883
+## [154] 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997</code></pre>
+<pre class="r"><code>segmented_sieve &lt;- function(n, delta) {
+  sqrtn &lt;- sqrt(n)
+  primes &lt;- rep(NA, sqrtn)
+  m &lt;- 1
+  while (m &lt;= n) {
+    m &lt;- m + delta
+    is_prime &lt;- rep(T, delta)
+  }
+}</code></pre>
 </div>
 <div id="timing" class="section level1">
 <h1>Timing</h1>
