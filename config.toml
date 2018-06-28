@@ -5,6 +5,8 @@ theme = "tuftesque"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+relativeURLs = true
+canonifyURLs = true
 
 [permalinks]
     post = "/:slug/"
