@@ -1,4 +1,4 @@
-baseurl = "http://john-ensley.com/"
+baseurl = "http://john-ensley.com/projecteuler"
 languageCode = "en-us"
 title = "A Hugo website"
 theme = "tuftesque"
