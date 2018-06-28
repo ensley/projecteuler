@@ -1,0 +1,56 @@
+---
+title: 'Problem 1: Multiples of 3 and 5'
+author: John Ensley
+date: '2018-06-26'
+slug: 001-multiples-of-3-and-5
+hidedate: yes
+draft: no
+weight: -1
+---
+
+# [Problem](https://projecteuler.net/problem=1)
+
+
+
+> If we list all the natural numbers below 10 that are multiples of 3 or 5, we 
+get 3, 5, 6 and 9. The sum of these multiples is 23.
+> 
+> Find the sum of all the multiples of 3 or 5 below 1000.
+
+# Explanation
+
+We start out with an easy one. There are a ton of different ways to get the correct sum. Since R is so [vectorized](http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html), I feel like the most R-like way is to avoid any loops and deal with vectors instead.
+
+Let's look at the list of numbers that make up our target sum:
+
+$$
+3, 5, 6, 9, 10, 12, 15, 18, 20, 21, 24, 25, 27, 30, 33
+$$
+
+All multiples of 3 appear in the list, so the first step is to add up all multiples of 3 from 1 to 1000. All multiples of 5 also appear in the list, so we can add all of those from 1 to 1000 as well. However, if we add these sums together, we will have included 15, 30, 45, ... twice. To account for this, we can simply sum up all multiples of 15 from 1 to 1000, and subtract that sum.
+
+# Implementation
+
+```{r}
+problem1 <- function(n) {
+  sum_3 <- sum(seq(0, n-1, by = 3))
+  sum_5 <- sum(seq(0, n-1, by = 5))
+  sum_15 <- sum(seq(0, n-1, by = 15))
+  
+  sum_3 + sum_5 - sum_15
+}
+```
+
+```{r}
+problem1(1000)
+```
+
+If you got 234168, you probably missed the "BELOW 1000" part of the problem statement. Even though 1000 is a multiple of 5, it should not be included in the sum.
+
+# Timing
+
+```{r}
+( m <- microbenchmark::microbenchmark(p1 = problem1(1000), unit = 'ms') )
+```
+
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 2)` milliseconds.

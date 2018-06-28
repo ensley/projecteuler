@@ -1,0 +1,49 @@
+---
+title: 'Problem 1: Multiples of 3 and 5'
+author: John Ensley
+date: '2018-06-26'
+slug: 001-multiples-of-3-and-5
+hidedate: yes
+draft: no
+weight: -1
+---
+
+
+
+<div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=1">Problem</a></h1>
+<blockquote>
+<p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.</p>
+<p>Find the sum of all the multiples of 3 or 5 below 1000.</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>We start out with an easy one. There are a ton of different ways to get the correct sum. Since R is so <a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">vectorized</a>, I feel like the most R-like way is to avoid any loops and deal with vectors instead.</p>
+<p>Let’s look at the list of numbers that make up our target sum:</p>
+<p><span class="math display">\[
+3, 5, 6, 9, 10, 12, 15, 18, 20, 21, 24, 25, 27, 30, 33
+\]</span></p>
+<p>All multiples of 3 appear in the list, so the first step is to add up all multiples of 3 from 1 to 1000. All multiples of 5 also appear in the list, so we can add all of those from 1 to 1000 as well. However, if we add these sums together, we will have included 15, 30, 45, … twice. To account for this, we can simply sum up all multiples of 15 from 1 to 1000, and subtract that sum.</p>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<pre class="r"><code>problem1 &lt;- function(n) {
+  sum_3 &lt;- sum(seq(0, n-1, by = 3))
+  sum_5 &lt;- sum(seq(0, n-1, by = 5))
+  sum_15 &lt;- sum(seq(0, n-1, by = 15))
+  
+  sum_3 + sum_5 - sum_15
+}</code></pre>
+<pre class="r"><code>problem1(1000)</code></pre>
+<pre><code>## [1] 233168</code></pre>
+<p>If you got 234168, you probably missed the “BELOW 1000” part of the problem statement. Even though 1000 is a multiple of 5, it should not be included in the sum.</p>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p1 = problem1(1000), unit = &#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##  expr      min        lq      mean   median     uq      max neval
+##    p1 0.032195 0.0335925 0.1756819 0.033997 0.0346 14.14679   100</code></pre>
+<p>The solution takes about 0.03 milliseconds.</p>
+</div>
