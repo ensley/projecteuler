@@ -3,12 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://john-ensley.com/projecteuler/002-even-fibonacci-numbers/</loc>
+    <loc>http://john-ensley.com/projecteuler/3/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/2/</loc>
     <lastmod>2018-06-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://john-ensley.com/projecteuler/001-multiples-of-3-and-5/</loc>
+    <loc>http://john-ensley.com/projecteuler/1/</loc>
     <lastmod>2018-06-26T00:00:00+00:00</lastmod>
   </url>
   
@@ -19,7 +24,7 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/</loc>
-    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -30,7 +35,7 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/post/</loc>
-    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
