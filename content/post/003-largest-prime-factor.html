@@ -23,7 +23,11 @@ draft: false
 <h1>Explanation</h1>
 <p>Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">That’s the <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">fundamental theorem of arithmetic</a>.</span> The most straightforward approach for solving this problem is to simply walk through the prime numbers less than <span class="math inline">\(n = 600851475143\)</span> and try dividing each of them into <span class="math inline">\(n\)</span>. The biggest one that divides evenly is our answer.</p>
 <p>The next question is how to walk through the prime numbers. We need some method for generating primes up to <span class="math inline">\(n\)</span>. Fortunately, one such method is very simple and has been known for thousands of years: the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a>. Start by writing out a list of integers up to <span class="math inline">\(n\)</span>. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you’re done, every prime between 1 and <span class="math inline">\(n\)</span> will be circled.</p>
-<p><img src="../img/Animation_Sieve_of_Eratosth.gif" /> <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">From <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Wikipedia</a></span></p>
+<div class="figure">
+<img src="../img/Animation_Sieve_of_Eratosth.gif" />
+
+</div>
+<p><label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">From <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Wikipedia</a></span></p>
 <p>That’s it! It’s a very efficient algorithm in terms of speed, particularly with R’s vectorized operations eliminating the need to loop over the multiples. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">Despite its speed, the sieve of Eratosthenes is quite inefficient in another aspect: memory use. We need to allocate enough memory to contain a vector of length <span class="math inline">\(n\)</span>. I tried that for <span class="math inline">\(n = 600851475143\)</span> and got an error message saying “cannot allocate vector of size 4476.7 Gb”. Yikes! See the Implementation section for tricks for dealing with this.</span> Once we can generate the primes, we can follow these steps to find the largest prime factor:</p>
 <ol style="list-style-type: decimal">
 <li>Divide 2 into <span class="math inline">\(n\)</span> as many times as we can. The result is the new <span class="math inline">\(n\)</span>.</li>
@@ -85,7 +89,7 @@ draft: false
 <pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p3 = largest_factor(600851475143),
                                       unit = &#39;ms&#39;) )</code></pre>
 <pre><code>## Unit: milliseconds
-##  expr      min       lq    mean   median       uq      max neval
-##    p3 26.03299 27.72154 29.6932 28.77507 30.31945 57.94788   100</code></pre>
-<p>The solution takes about 28.8 milliseconds.</p>
+##  expr      min       lq     mean   median       uq     max neval
+##    p3 26.74947 30.54693 37.08138 34.12796 40.65531 69.3102   100</code></pre>
+<p>The solution takes about 34.1 milliseconds.</p>
 </div>
