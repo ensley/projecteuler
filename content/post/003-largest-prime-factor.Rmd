@@ -2,11 +2,12 @@
 title: 'Problem 3: Largest prime factor'
 author: John Ensley
 date: '2018-06-27'
-slug: 003-largest-prime-factor
+slug: 003
 categories: []
 tags: []
 hidedate: true
 weight: -3
+draft: false
 ---
 
 # [Problem](https://projecteuler.net/problem=3)
@@ -17,19 +18,37 @@ weight: -3
 
 # Explanation
 
-Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. That's the [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic). The most straightforward approach for solving this problem is to simply walk through the prime numbers less than $n = 600851475143$ and try dividing each of them into $n$. The biggest one that divides evenly is our answer.
+Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. `r tufte::margin_note("That's the [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic).")` The most straightforward approach for solving this problem is to simply walk through the prime numbers less than $n = 600851475143$ and try dividing each of them into $n$. The biggest one that divides evenly is our answer.
 
 The next question is how to walk through the prime numbers. We need some method for generating primes up to $n$. Fortunately, one such method is very simple and has been known for thousands of years: the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). Start by writing out a list of integers up to $n$. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you're done, every prime between 1 and $n$ will be circled.
 
-That's it! It's a very efficient algorithm in terms of speed, particularly with R's vectorized operations eliminating the need to loop over the multiples. We can make an optimization by recognizing that we really only need a list of primes up to $n/2$, not $n$, since we care about the largest prime factor. The smallest prime is 2, so the biggest the largest prime factor could be is $n/2$.
+![](../../img/Animation_Sieve_of_Eratosth.gif)
+`r tufte::margin_note('From [Wikipedia](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)')`
+
+
+
+That's it! It's a very efficient algorithm in terms of speed, particularly with R's vectorized operations eliminating the need to loop over the multiples. `r tufte::margin_note('Despite its speed, the sieve of Eratosthenes is quite inefficient in another aspect: memory use. We need to allocate enough memory to contain a vector of length $n$. I tried that for $n = 600851475143$ and got an error message saying "cannot allocate vector of size 4476.7 Gb". Yikes! See the Implementation section for tricks for dealing with this.')` Once we can generate the primes, we can follow these steps to find the largest prime factor:
+
+1. Divide 2 into $n$ as many times as we can. The result is the new $n$.
+2. Divide 3 into the new $n$ as many times as we can.
+3. Repeat for all primes.
+4. When $n = 1$, stop. The last prime we used was the largest prime factor of the original $n$.
 
 # Implementation
+
+First we'll implement the sieve. There are a couple of optimizations we can make to speed it up a bit. First, after circling a prime $p$, we don't actually need to cross off multiples starting with $2p$. We can skip ahead and cross off starting with $p^2$. It turns out that we are guaranteed that $2p, 3p, \dots, p^2-p$ will already be crossed off. `r tufte::margin_note("Watch the gif closely if you don't believe me.")` Why? Consider some number $m < p^2$. According to the fundamental theorem of arithmetic, either $m$ is prime or $m$ is the product of some primes. If $m$ is prime, then obviously it wasn't a multiple of $p$. If not, then because $m < p^2$, at least one of its prime factors is less than $p$. In other words, $m$ is a multiple of some prime $q < p$. Therefore it must already be crossed off. Therefore, we don't need to worry about crossing off anything less than $p^2$.
+
+By that logic, we don't need to iterate through the entire list from 2 to $n$. If we get to $p$ and don't start crossing things off until $p^2$, then what's the point of continuing once $p$ gets big enough that $p^2 > n$? We'll never cross anything off again at that point. We can safely stop once we get to $\sqrt{n}$.
+
+Here is the optimized Sieve of Eratosthenes.
 
 ```{r}
 sieve <- function(n) {
   is_prime <- c(F, rep(T, n-1))
+  # notice we're only letting i get to sqrt(n), not n
   for (i in 2:sqrt(n)) {
     if (is_prime[i]) {
+      # the crossing off begins at i^2, not 2i
       is_prime[seq(i*i, n, by = i)] <- F
     }
   }
@@ -37,22 +56,53 @@ sieve <- function(n) {
 }
 ```
 
-```{r}
-n <- 1000
-sieve(n)
-```
+Let's try it out by printing all primes less than 100.
 
 ```{r}
-segmented_sieve <- function(n, delta) {
-  sqrtn <- sqrt(n)
-  primes <- rep(NA, sqrtn)
-  m <- 1
-  while (m <= n) {
-    m <- m + delta
-    is_prime <- rep(T, delta)
+sieve(100)
+```
+
+Looks right. Now it's time to find the largest prime factor of $n$.
+
+There is no way that anyone's computer has enough memory to run `sieve(600851475143)`. Fortunately, we don't need every single prime up to 600 billion. We actually only need a list of primes up to $\sqrt{600851475143}$, which is about $775146$ -- much more manageable. But why don't we need the other primes that are less than $n$? The reason is along the same lines as the reason why we could stop the sieve at $\sqrt{n}$. Repeatedly dividing $n$ by primes is essentially the same thing as removing primes from $n$'s prime factorization one by one. Once we've gone through and removed all the primes up to $\sqrt{n}$, the only primes remaining in the factorization must be greater than $\sqrt{n}$. But the factorization couldn't have had two primes that were both greater than $\sqrt{n}$, so there must be only one prime left -- the largest prime, which is what we're after. So if we run out of primes in the list that goes up to $\sqrt{n}$, we immediately know that the value we're left with is the largest prime in the original factorization of $n$.
+
+```{r}
+largest_factor <- function(n) {
+  primes <- sieve(sqrt(n))
+  max_factor <- 1
+  i <- 1
+  while (n > 1) {
+    # this is the key. if we're out of primes, we've found the answer.
+    if (i > length(primes)) {
+      return(n)
+    }
+    p <- primes[i]
+    while (n %% p == 0) {
+      # if we're in this while loop, then p is a prime factor of n.
+      # since the primes list is in ascending order, we know p is the largest
+      # prime factor we've found so far.
+      n <- n / p
+    }
+    i <- i + 1
   }
+  # if we're out here, then n == 1, so we've found all our prime factors.
+  # p still holds the value of the largest one, so that's what we return.
+  p
 }
+```
+
+Time to try it out.
+
+```{r}
+largest_factor(600851475143)
 ```
 
 
 # Timing
+
+```{r}
+( m <- microbenchmark::microbenchmark(p3 = largest_factor(600851475143),
+                                      unit = 'ms') )
+```
+
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 1)` milliseconds.

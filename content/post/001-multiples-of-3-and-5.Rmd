@@ -2,7 +2,7 @@
 title: 'Problem 1: Multiples of 3 and 5'
 author: John Ensley
 date: '2018-06-26'
-slug: 001-multiples-of-3-and-5
+slug: 001
 hidedate: yes
 draft: no
 weight: -1

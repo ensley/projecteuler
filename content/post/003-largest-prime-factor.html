@@ -2,11 +2,12 @@
 title: 'Problem 3: Largest prime factor'
 author: John Ensley
 date: '2018-06-27'
-slug: 003-largest-prime-factor
+slug: 003
 categories: []
 tags: []
 hidedate: true
 weight: -3
+draft: false
 ---
 
 
@@ -20,43 +21,71 @@ weight: -3
 </div>
 <div id="explanation" class="section level1">
 <h1>Explanation</h1>
-<p>Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. That’s the <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">fundamental theorem of arithmetic</a>. The most straightforward approach for solving this problem is to simply walk through the prime numbers less than <span class="math inline">\(n = 600851475143\)</span> and try dividing each of them into <span class="math inline">\(n\)</span>. The biggest one that divides evenly is our answer.</p>
+<p>Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">That’s the <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">fundamental theorem of arithmetic</a>.</span> The most straightforward approach for solving this problem is to simply walk through the prime numbers less than <span class="math inline">\(n = 600851475143\)</span> and try dividing each of them into <span class="math inline">\(n\)</span>. The biggest one that divides evenly is our answer.</p>
 <p>The next question is how to walk through the prime numbers. We need some method for generating primes up to <span class="math inline">\(n\)</span>. Fortunately, one such method is very simple and has been known for thousands of years: the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a>. Start by writing out a list of integers up to <span class="math inline">\(n\)</span>. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you’re done, every prime between 1 and <span class="math inline">\(n\)</span> will be circled.</p>
-<p>That’s it! It’s a very efficient algorithm in terms of speed, particularly with R’s vectorized operations eliminating the need to loop over the multiples. We can make an optimization by recognizing that we really only need a list of primes up to <span class="math inline">\(n/2\)</span>, not <span class="math inline">\(n\)</span>, since we care about the largest prime factor. The smallest prime is 2, so the biggest the largest prime factor could be is <span class="math inline">\(n/2\)</span>.</p>
+<p><img src="../../img/Animation_Sieve_of_Eratosth.gif" /> <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">From <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Wikipedia</a></span></p>
+<p>That’s it! It’s a very efficient algorithm in terms of speed, particularly with R’s vectorized operations eliminating the need to loop over the multiples. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">Despite its speed, the sieve of Eratosthenes is quite inefficient in another aspect: memory use. We need to allocate enough memory to contain a vector of length <span class="math inline">\(n\)</span>. I tried that for <span class="math inline">\(n = 600851475143\)</span> and got an error message saying “cannot allocate vector of size 4476.7 Gb”. Yikes! See the Implementation section for tricks for dealing with this.</span> Once we can generate the primes, we can follow these steps to find the largest prime factor:</p>
+<ol style="list-style-type: decimal">
+<li>Divide 2 into <span class="math inline">\(n\)</span> as many times as we can. The result is the new <span class="math inline">\(n\)</span>.</li>
+<li>Divide 3 into the new <span class="math inline">\(n\)</span> as many times as we can.</li>
+<li>Repeat for all primes.</li>
+<li>When <span class="math inline">\(n = 1\)</span>, stop. The last prime we used was the largest prime factor of the original <span class="math inline">\(n\)</span>.</li>
+</ol>
 </div>
 <div id="implementation" class="section level1">
 <h1>Implementation</h1>
+<p>First we’ll implement the sieve. There are a couple of optimizations we can make to speed it up a bit. First, after circling a prime <span class="math inline">\(p\)</span>, we don’t actually need to cross off multiples starting with <span class="math inline">\(2p\)</span>. We can skip ahead and cross off starting with <span class="math inline">\(p^2\)</span>. It turns out that we are guaranteed that <span class="math inline">\(2p, 3p, \dots, p^2-p\)</span> will already be crossed off. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">Watch the gif closely if you don’t believe me.</span> Why? Consider some number <span class="math inline">\(m &lt; p^2\)</span>. According to the fundamental theorem of arithmetic, either <span class="math inline">\(m\)</span> is prime or <span class="math inline">\(m\)</span> is the product of some primes. If <span class="math inline">\(m\)</span> is prime, then obviously it wasn’t a multiple of <span class="math inline">\(p\)</span>. If not, then because <span class="math inline">\(m &lt; p^2\)</span>, at least one of its prime factors is less than <span class="math inline">\(p\)</span>. In other words, <span class="math inline">\(m\)</span> is a multiple of some prime <span class="math inline">\(q &lt; p\)</span>. Therefore it must already be crossed off. Therefore, we don’t need to worry about crossing off anything less than <span class="math inline">\(p^2\)</span>.</p>
+<p>By that logic, we don’t need to iterate through the entire list from 2 to <span class="math inline">\(n\)</span>. If we get to <span class="math inline">\(p\)</span> and don’t start crossing things off until <span class="math inline">\(p^2\)</span>, then what’s the point of continuing once <span class="math inline">\(p\)</span> gets big enough that <span class="math inline">\(p^2 &gt; n\)</span>? We’ll never cross anything off again at that point. We can safely stop once we get to <span class="math inline">\(\sqrt{n}\)</span>.</p>
+<p>Here is the optimized Sieve of Eratosthenes.</p>
 <pre class="r"><code>sieve &lt;- function(n) {
   is_prime &lt;- c(F, rep(T, n-1))
+  # notice we&#39;re only letting i get to sqrt(n), not n
   for (i in 2:sqrt(n)) {
     if (is_prime[i]) {
+      # the crossing off begins at i^2, not 2i
       is_prime[seq(i*i, n, by = i)] &lt;- F
     }
   }
   which(is_prime)
 }</code></pre>
-<pre class="r"><code>n &lt;- 1000
-sieve(n)</code></pre>
-<pre><code>##   [1]   2   3   5   7  11  13  17  19  23  29  31  37  41  43  47  53  59
-##  [18]  61  67  71  73  79  83  89  97 101 103 107 109 113 127 131 137 139
-##  [35] 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233
-##  [52] 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337
-##  [69] 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439
-##  [86] 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541 547 557
-## [103] 563 569 571 577 587 593 599 601 607 613 617 619 631 641 643 647 653
-## [120] 659 661 673 677 683 691 701 709 719 727 733 739 743 751 757 761 769
-## [137] 773 787 797 809 811 821 823 827 829 839 853 857 859 863 877 881 883
-## [154] 887 907 911 919 929 937 941 947 953 967 971 977 983 991 997</code></pre>
-<pre class="r"><code>segmented_sieve &lt;- function(n, delta) {
-  sqrtn &lt;- sqrt(n)
-  primes &lt;- rep(NA, sqrtn)
-  m &lt;- 1
-  while (m &lt;= n) {
-    m &lt;- m + delta
-    is_prime &lt;- rep(T, delta)
+<p>Let’s try it out by printing all primes less than 100.</p>
+<pre class="r"><code>sieve(100)</code></pre>
+<pre><code>##  [1]  2  3  5  7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83
+## [24] 89 97</code></pre>
+<p>Looks right. Now it’s time to find the largest prime factor of <span class="math inline">\(n\)</span>.</p>
+<p>There is no way that anyone’s computer has enough memory to run <code>sieve(600851475143)</code>. Fortunately, we don’t need every single prime up to 600 billion. We actually only need a list of primes up to <span class="math inline">\(\sqrt{600851475143}\)</span>, which is about <span class="math inline">\(775146\)</span> – much more manageable. But why don’t we need the other primes that are less than <span class="math inline">\(n\)</span>? The reason is along the same lines as the reason why we could stop the sieve at <span class="math inline">\(\sqrt{n}\)</span>. Repeatedly dividing <span class="math inline">\(n\)</span> by primes is essentially the same thing as removing primes from <span class="math inline">\(n\)</span>’s prime factorization one by one. Once we’ve gone through and removed all the primes up to <span class="math inline">\(\sqrt{n}\)</span>, the only primes remaining in the factorization must be greater than <span class="math inline">\(\sqrt{n}\)</span>. But the factorization couldn’t have had two primes that were both greater than <span class="math inline">\(\sqrt{n}\)</span>, so there must be only one prime left – the largest prime, which is what we’re after. So if we run out of primes in the list that goes up to <span class="math inline">\(\sqrt{n}\)</span>, we immediately know that the value we’re left with is the largest prime in the original factorization of <span class="math inline">\(n\)</span>.</p>
+<pre class="r"><code>largest_factor &lt;- function(n) {
+  primes &lt;- sieve(sqrt(n))
+  max_factor &lt;- 1
+  i &lt;- 1
+  while (n &gt; 1) {
+    # this is the key. if we&#39;re out of primes, we&#39;ve found the answer.
+    if (i &gt; length(primes)) {
+      return(n)
+    }
+    p &lt;- primes[i]
+    while (n %% p == 0) {
+      # if we&#39;re in this while loop, then p is a prime factor of n.
+      # since the primes list is in ascending order, we know p is the largest
+      # prime factor we&#39;ve found so far.
+      n &lt;- n / p
+    }
+    i &lt;- i + 1
   }
+  # if we&#39;re out here, then n == 1, so we&#39;ve found all our prime factors.
+  # p still holds the value of the largest one, so that&#39;s what we return.
+  p
 }</code></pre>
+<p>Time to try it out.</p>
+<pre class="r"><code>largest_factor(600851475143)</code></pre>
+<pre><code>## [1] 6857</code></pre>
 </div>
 <div id="timing" class="section level1">
 <h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p3 = largest_factor(600851475143),
+                                      unit = &#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##  expr      min       lq     mean   median       uq      max neval
+##    p3 25.87157 28.30996 30.89706 29.46144 31.26404 63.71315   100</code></pre>
+<p>The solution takes about 29.5 milliseconds.</p>
 </div>
