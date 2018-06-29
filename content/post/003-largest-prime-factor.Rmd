@@ -22,7 +22,7 @@ Every integer greater than 1 is either a prime number or can be represented as t
 
 The next question is how to walk through the prime numbers. We need some method for generating primes up to $n$. Fortunately, one such method is very simple and has been known for thousands of years: the [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes). Start by writing out a list of integers up to $n$. Ignore 1 because who cares, 1 is boring. Draw a circle around 2, and then cross out every multiple of 2. Go back to the beginning and circle the first non-crossed-out number (3) and cross out all of its multiples. Repeat this process until there are no more numbers that are either circled or crossed out. When you're done, every prime between 1 and $n$ will be circled.
 
-![](../../img/Animation_Sieve_of_Eratosth.gif)
+![](/projecteuler/img/Animation_Sieve_of_Eratosth.gif)
 `r tufte::margin_note('From [Wikipedia](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)')`
 
 
