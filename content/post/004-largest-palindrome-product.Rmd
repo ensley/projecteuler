@@ -1,0 +1,155 @@
+---
+title: 'Problem 4: Largest palindrome product'
+author: John Ensley
+date: '2018-06-29'
+slug: '004'
+categories: []
+tags: []
+weight: -4
+hidedate: true
+---
+
+# [Problem](https://projecteuler.net/problem=4)
+
+> A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+> 
+> Find the largest palindrome made from the product of two 3-digit numbers.
+
+# Explanation
+
+The overall approach for this problem is very simple: we'll loop through all combinations of two three-digit numbers, multiply them, and see if the product is a palindrome or not. If it is a palindrome, and it's bigger than any palindrome we've seen so far, then we make a note of it. At the end we'll be left with the largest palindrome product of 3-digit numbers.
+
+# Implementation
+
+There are 900 three-digit numbers, so iterating through all combinations would require $900*900 = 810,000$ calls to some palindrome-checking function. This could potentially take a long time. For efficiency, we should consider two things. First, we should try to cut down on the number of times we need to check if a number is a palindrome. Second, we should be smart about how we check for palindrome-ness.
+
+Let's tackle the palindrome function first. There are a few ways we could check whether a number $x$ is a palindrome. This function converts $x$ to a vector of digits and then compares it to the reversed version of itself.
+
+```{r}
+is_palindrome1 <- function(x) {
+  digit_vector <- as.numeric(strsplit(as.character(x), split = '')[[1]])
+  all(digit_vector == rev(digit_vector))
+}
+```
+
+This one builds up a vector of digits using modular arithmetic instead of converting to a string and back to a number as in `is_palindrome1`. It again compares the vector to its reverse.
+
+```{r}
+is_palindrome2 <- function(x) {
+  ndigits <- floor(log10(x)) + 1
+  digits <- rep(NA, ndigits)
+  for (i in rev(seq_along(digits))) {
+    digits[i] <- x %% 10
+    x <- x %/% 10
+  }
+  all(digits == rev(digits))
+}
+```
+
+Instead of building up a vector of digits, this one builds up a reversed integer. For example, if $x = 1234$, `reversed` will become $4321$. Then $x$ and `reversed` are compared.
+
+```{r}
+is_palindrome3 <- function(x) {
+  n <- x
+  reversed <- 0
+  while (x > 0) {
+    remainder <- x %% 10
+    reversed <- 10 * reversed + remainder
+    x <- x %/% 10
+  }
+  n == reversed
+}
+```
+
+In this one, we aren't reversing $x$, but instead we compare the first and last digits of $x$. If they are not equal, then we already know $x$ is not a palindrome and we can exit the function without checking the rest. If they are equal, we remove the first and last digit from $x$ and perform the comparison again on this new $x$.
+
+```{r}
+is_palindrome4 <- function(x) {
+  d <- 10^(floor(log10(x)))
+  r <- 10
+  while (x > 0) {
+    dig_first <- x %/% d
+    dig_last <- x %% r
+    if (dig_first != dig_last) return(FALSE)
+    x <- x %% d %/% r
+    d <- d / 100
+  }
+  return(TRUE)
+}
+```
+
+`is_palindrome4` has the advantage of potentially exiting early, although there are much more modular arithmetic calculations needed than in `is_palindrome3`. I'm not sure how fast R can perform numeric to string conversions, so I don't know how well `is_palindrome1` will perform compared to `is_palindrome2`. Let's find out! First let's test all four functions on a palindromic number. Since products of 3-digit numbers must be 5 or 6 digits, we won't worry about testing very large numbers.
+
+```{r}
+(m_pal <- microbenchmark::microbenchmark(is_palindrome(456654),
+                                         is_palindrome2(456654),
+                                         is_palindrome3(456654),
+                                         is_palindrome4(456654),
+                                         unit = 'relative',
+                                         control = list(warmup = 10)))
+```
+
+Note that the reported values are relative to the fastest runtime, not absolute speed. `r tufte::margin_note('The runtimes for all four functions are only a few microseconds, so the actual values really aren't that important.')` `is_palindrome3` and `is_palindrome4` perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let's try testing on a non-palindrome as well.
+
+```{r}
+(m_pal <- microbenchmark::microbenchmark(is_palindrome(468841),
+                                         is_palindrome2(468841),
+                                         is_palindrome3(468841),
+                                         is_palindrome4(468841),
+                                         unit = 'relative',
+                                         control = list(warmup = 10)))
+```
+
+As we would expect, `is_palindrome3` performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes, so we'll 
+
+
+```{r}
+microbenchmark::microbenchmark(is_palindrome(12345),
+                               is_palindrome2(12345))
+```
+
+
+
+
+
+
+
+
+```{r}
+p4.1 <- function() {
+  largest <- -Inf
+  for (a in 999:100) {
+    for (b in a:100) {
+      x <- a*b
+      if (is_palindrome(x) && x > largest) {
+        largest <- x
+      }
+    }
+  }
+  largest
+}
+```
+
+```{r}
+p4.2 <- function() {
+  largest <- -Inf
+  for (a in 999:100) {
+    for (b in a:100) {
+      x <- a*b
+      if (x > largest && is_palindrome(x)) {
+        largest <- x
+      }
+    }
+  }
+  largest
+}
+```
+
+
+# Timing
+
+```{r}
+microbenchmark::microbenchmark(p4.1(), p4.2())
+```
+
+
