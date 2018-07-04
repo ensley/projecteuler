@@ -78,10 +78,10 @@ is_palindrome4 <- function(x) {
 }
 ```
 
-`is_palindrome4` has the advantage of potentially exiting early, although there are much more modular arithmetic calculations needed than in `is_palindrome3`. I'm not sure how fast R can perform numeric to string conversions, so I don't know how well `is_palindrome1` will perform compared to `is_palindrome2`. Let's find out! First let's test all four functions on a palindromic number. Since products of 3-digit numbers must be 5 or 6 digits, we won't worry about testing very large numbers.
+`is_palindrome4` has the advantage of potentially exiting early, although there are many more modular arithmetic calculations needed than in `is_palindrome3`. I'm not sure how fast R can perform numeric to string conversions, so I don't know how well `is_palindrome1` will perform compared to `is_palindrome2`. Let's find out! First let's test all four functions on a palindromic number. Since products of 3-digit numbers must be 5 or 6 digits, we won't worry about testing very large numbers.
 
 ```{r}
-(m_pal <- microbenchmark::microbenchmark(is_palindrome(456654),
+(m_pal <- microbenchmark::microbenchmark(is_palindrome1(456654),
                                          is_palindrome2(456654),
                                          is_palindrome3(456654),
                                          is_palindrome4(456654),
@@ -89,10 +89,10 @@ is_palindrome4 <- function(x) {
                                          control = list(warmup = 10)))
 ```
 
-Note that the reported values are relative to the fastest runtime, not absolute speed. `r tufte::margin_note('The runtimes for all four functions are only a few microseconds, so the actual values really aren't that important.')` `is_palindrome3` and `is_palindrome4` perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let's try testing on a non-palindrome as well.
+Note that the reported values are relative to the fastest runtime, not absolute speed. `r tufte::margin_note('The runtimes for all four functions are only a few microseconds, so the actual values really aren\'t that important.')` `is_palindrome3` and `is_palindrome4` perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let's try testing on a non-palindrome as well.
 
 ```{r}
-(m_pal <- microbenchmark::microbenchmark(is_palindrome(468841),
+(m_pal <- microbenchmark::microbenchmark(is_palindrome1(468841),
                                          is_palindrome2(468841),
                                          is_palindrome3(468841),
                                          is_palindrome4(468841),
@@ -100,28 +100,21 @@ Note that the reported values are relative to the fastest runtime, not absolute 
                                          control = list(warmup = 10)))
 ```
 
-As we would expect, `is_palindrome3` performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes, so we'll 
-
-
-```{r}
-microbenchmark::microbenchmark(is_palindrome(12345),
-                               is_palindrome2(12345))
-```
+As we would expect, `is_palindrome4` performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes. Let's go with `is_palindrome4` as our final answer.
 
 
 
+The next step is to find the largest palindrome product. Again, the general idea is to iterate through all products $ab$ where $a$ and $b$ are three-digit numbers. There are a couple of optimizations that minimize the number of times we'll need to call `is_palindrome4`. First of all, because the largest palindrome will likely be the product of two larger three-digit numbers, we can start with $a$ and $b$ equal to 999 and move backwards to 100. That way we'll probably encounter the largest palindrome sooner.
 
-
-
-
+Second, and more importantly, we don't need to check whether every single $ab$ is a palindrome. If $ab$ is less than the largest palindrome we've found so far, then we don't care if it is also a palindrome.
 
 ```{r}
-p4.1 <- function() {
+p4 <- function() {
   largest <- -Inf
   for (a in 999:100) {
     for (b in a:100) {
       x <- a*b
-      if (is_palindrome(x) && x > largest) {
+      if (x > largest && is_palindrome4(x)) {
         largest <- x
       }
     }
@@ -131,25 +124,14 @@ p4.1 <- function() {
 ```
 
 ```{r}
-p4.2 <- function() {
-  largest <- -Inf
-  for (a in 999:100) {
-    for (b in a:100) {
-      x <- a*b
-      if (x > largest && is_palindrome(x)) {
-        largest <- x
-      }
-    }
-  }
-  largest
-}
+p4()
 ```
 
 
 # Timing
 
 ```{r}
-microbenchmark::microbenchmark(p4.1(), p4.2())
+( m <- microbenchmark::microbenchmark(p4(), unit = 'ms') )
 ```
 
-
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 1)` milliseconds. If the predicates in the `if` statement were reversed, i.e. `if (is_palindrome4(x) && x > largest)`, it would take about 2 seconds, or roughly 50 times longer.

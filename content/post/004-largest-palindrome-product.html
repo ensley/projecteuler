@@ -21,14 +21,109 @@ hidedate: true
 </div>
 <div id="explanation" class="section level1">
 <h1>Explanation</h1>
+<p>The overall approach for this problem is very simple: we’ll loop through all combinations of two three-digit numbers, multiply them, and see if the product is a palindrome or not. If it is a palindrome, and it’s bigger than any palindrome we’ve seen so far, then we make a note of it. At the end we’ll be left with the largest palindrome product of 3-digit numbers.</p>
 </div>
 <div id="implementation" class="section level1">
 <h1>Implementation</h1>
-<pre class="r"><code>is_palindrome &lt;- function(x) {
+<p>There are 900 three-digit numbers, so iterating through all combinations would require <span class="math inline">\(900*900 = 810,000\)</span> calls to some palindrome-checking function. This could potentially take a long time. For efficiency, we should consider two things. First, we should try to cut down on the number of times we need to check if a number is a palindrome. Second, we should be smart about how we check for palindrome-ness.</p>
+<p>Let’s tackle the palindrome function first. There are a few ways we could check whether a number <span class="math inline">\(x\)</span> is a palindrome. This function converts <span class="math inline">\(x\)</span> to a vector of digits and then compares it to the reversed version of itself.</p>
+<pre class="r"><code>is_palindrome1 &lt;- function(x) {
   digit_vector &lt;- as.numeric(strsplit(as.character(x), split = &#39;&#39;)[[1]])
   all(digit_vector == rev(digit_vector))
 }</code></pre>
+<p>This one builds up a vector of digits using modular arithmetic instead of converting to a string and back to a number as in <code>is_palindrome1</code>. It again compares the vector to its reverse.</p>
+<pre class="r"><code>is_palindrome2 &lt;- function(x) {
+  ndigits &lt;- floor(log10(x)) + 1
+  digits &lt;- rep(NA, ndigits)
+  for (i in rev(seq_along(digits))) {
+    digits[i] &lt;- x %% 10
+    x &lt;- x %/% 10
+  }
+  all(digits == rev(digits))
+}</code></pre>
+<p>Instead of building up a vector of digits, this one builds up a reversed integer. For example, if <span class="math inline">\(x = 1234\)</span>, <code>reversed</code> will become <span class="math inline">\(4321\)</span>. Then <span class="math inline">\(x\)</span> and <code>reversed</code> are compared.</p>
+<pre class="r"><code>is_palindrome3 &lt;- function(x) {
+  n &lt;- x
+  reversed &lt;- 0
+  while (x &gt; 0) {
+    remainder &lt;- x %% 10
+    reversed &lt;- 10 * reversed + remainder
+    x &lt;- x %/% 10
+  }
+  n == reversed
+}</code></pre>
+<p>In this one, we aren’t reversing <span class="math inline">\(x\)</span>, but instead we compare the first and last digits of <span class="math inline">\(x\)</span>. If they are not equal, then we already know <span class="math inline">\(x\)</span> is not a palindrome and we can exit the function without checking the rest. If they are equal, we remove the first and last digit from <span class="math inline">\(x\)</span> and perform the comparison again on this new <span class="math inline">\(x\)</span>.</p>
+<pre class="r"><code>is_palindrome4 &lt;- function(x) {
+  d &lt;- 10^(floor(log10(x)))
+  r &lt;- 10
+  while (x &gt; 0) {
+    dig_first &lt;- x %/% d
+    dig_last &lt;- x %% r
+    if (dig_first != dig_last) return(FALSE)
+    x &lt;- x %% d %/% r
+    d &lt;- d / 100
+  }
+  return(TRUE)
+}</code></pre>
+<p><code>is_palindrome4</code> has the advantage of potentially exiting early, although there are many more modular arithmetic calculations needed than in <code>is_palindrome3</code>. I’m not sure how fast R can perform numeric to string conversions, so I don’t know how well <code>is_palindrome1</code> will perform compared to <code>is_palindrome2</code>. Let’s find out! First let’s test all four functions on a palindromic number. Since products of 3-digit numbers must be 5 or 6 digits, we won’t worry about testing very large numbers.</p>
+<pre class="r"><code>(m_pal &lt;- microbenchmark::microbenchmark(is_palindrome1(456654),
+                                         is_palindrome2(456654),
+                                         is_palindrome3(456654),
+                                         is_palindrome4(456654),
+                                         unit = &#39;relative&#39;,
+                                         control = list(warmup = 10)))</code></pre>
+<pre><code>## Unit: relative
+##                    expr      min       lq      mean   median       uq
+##  is_palindrome1(456654) 2.722163 2.730948 0.1910853 2.671029 2.258436
+##  is_palindrome2(456654) 3.296925 3.565058 0.4333059 3.403655 2.778436
+##  is_palindrome3(456654) 1.000000 1.000000 1.0000000 1.000000 1.000000
+##  is_palindrome4(456654) 1.051432 1.099485 0.3358114 1.058890 1.071605
+##        max neval
+##  0.1476704   100
+##  0.3808497   100
+##  1.0000000   100
+##  0.3227303   100</code></pre>
+<p>Note that the reported values are relative to the fastest runtime, not absolute speed. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">The runtimes for all four functions are only a few microseconds, so the actual values really aren’t that important.</span> <code>is_palindrome3</code> and <code>is_palindrome4</code> perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let’s try testing on a non-palindrome as well.</p>
+<pre class="r"><code>(m_pal &lt;- microbenchmark::microbenchmark(is_palindrome1(468841),
+                                         is_palindrome2(468841),
+                                         is_palindrome3(468841),
+                                         is_palindrome4(468841),
+                                         unit = &#39;relative&#39;,
+                                         control = list(warmup = 10)))</code></pre>
+<pre><code>## Unit: relative
+##                    expr      min       lq     mean   median       uq
+##  is_palindrome1(468841) 5.683725 5.349912 5.183559 5.139792 5.008589
+##  is_palindrome2(468841) 6.526846 6.096673 5.917937 5.816645 5.620859
+##  is_palindrome3(468841) 2.026846 1.843082 1.844823 1.843628 1.816871
+##  is_palindrome4(468841) 1.000000 1.000000 1.000000 1.000000 1.000000
+##       max neval
+##  6.563069   100
+##  6.987646   100
+##  2.226051   100
+##  1.000000   100</code></pre>
+<p>As we would expect, <code>is_palindrome4</code> performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes. Let’s go with <code>is_palindrome4</code> as our final answer.</p>
+<p>The next step is to find the largest palindrome product. Again, the general idea is to iterate through all products <span class="math inline">\(ab\)</span> where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are three-digit numbers. There are a couple of optimizations that minimize the number of times we’ll need to call <code>is_palindrome4</code>. First of all, because the largest palindrome will likely be the product of two larger three-digit numbers, we can start with <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> equal to 999 and move backwards to 100. That way we’ll probably encounter the largest palindrome sooner.</p>
+<p>Second, and more importantly, we don’t need to check whether every single <span class="math inline">\(ab\)</span> is a palindrome. If <span class="math inline">\(ab\)</span> is less than the largest palindrome we’ve found so far, then we don’t care if it is also a palindrome.</p>
+<pre class="r"><code>p4 &lt;- function() {
+  largest &lt;- -Inf
+  for (a in 999:100) {
+    for (b in a:100) {
+      x &lt;- a*b
+      if (x &gt; largest &amp;&amp; is_palindrome4(x)) {
+        largest &lt;- x
+      }
+    }
+  }
+  largest
+}</code></pre>
+<pre class="r"><code>p4()</code></pre>
+<pre><code>## [1] 906609</code></pre>
 </div>
 <div id="timing" class="section level1">
 <h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p4(), unit = &#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##  expr      min       lq     mean  median       uq      max neval
+##  p4() 29.18489 31.42734 34.05066 32.4196 34.78427 60.60575   100</code></pre>
+<p>The solution takes about 32.4 milliseconds. If the predicates in the <code>if</code> statement were reversed, i.e. <code>if (is_palindrome4(x) &amp;&amp; x &gt; largest)</code>, it would take about 2 seconds, or roughly 50 times longer.</p>
 </div>
