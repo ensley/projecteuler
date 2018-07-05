@@ -1,0 +1,98 @@
+---
+title: 'Problem 5: Smallest multiple'
+author: John Ensley
+date: '2018-07-03'
+slug: '005'
+categories: []
+tags: [gcd, lcm]
+weight: -5
+hidedate: true
+---
+
+#[Problem](https://projecteuler.net/problem=5)
+
+> 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+> 
+> What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+
+# Explanation
+
+This problem boils down to finding the [least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple) of all numbers from 1 to 20. `r tufte::margin_note('The least common multiple, or LCM, of two integers $a$ and $b$ is the smallest positive integer that is divisible by both $a$ and $b$.')` There are many ways to calculate the LCM for a set of integers, but one of the simpler ones is to write it in terms of the [greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor), or GCD. `r tufte::margin_note('The greatest common divisor, or GCD, of two integers $a$ and $b$ is the largest positive integer that divides both $a$ and $b$.')`
+
+The relationship between the LCM and the GCD is as follows:
+
+$$
+LCM(a, b) = \frac{|a \cdot b|}{GCD(a, b)}.
+$$
+
+The GCD can be calculated very efficiently using [Euclid's algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). This algorithm takes advantage of the fact that the GCD doesn't change if you replace $b$ with $b \; \textrm{mod} \; a$. `r tufte::margin_note('Or, if $a$ is larger than $b$, replace $a$ with $a \; \textrm{mod} \; b$.')`
+
+# Implementation
+
+
+```{r}
+gcd <- function(a, b) {
+  while(b != 0) {
+    t <- b
+    b <- a %% b
+    a <- t
+  }
+  a
+}
+```
+
+
+
+```{r}
+lcm <- function(a, b) {
+  a / gcd(a, b) * b
+}
+```
+
+```{r}
+lcm <- function(v) {
+  n <- length(v)
+  if (n < 2) stop('Must supply a vector of at least 2 integers')
+  
+  x <- v[1]
+  for (i in 2:n) {
+    x <- x / gcd(x, v[i]) * v[i]
+  }
+  x
+}
+```
+
+
+```{Rcpp eval=FALSE, include=FALSE}
+# include <Rcpp.h>
+using namespace Rcpp;
+
+int gcd_cpp(int a, int b)
+{
+  if (b == 0) return a;
+  else return gcd_cpp(b, a % b);
+}
+
+// [[Rcpp::export]]
+int lcm_cpp(NumericVector v)
+{
+  int n = v.size();
+  int x = v[0];
+  for (int i = 1; i < n; ++i)
+  {
+    x = x / gcd_cpp(x, v[i]) * v[i];
+  }
+  return x;
+}
+```
+
+
+
+
+# Timing
+
+
+```{r}
+microbenchmark::microbenchmark(lcm(1:20))
+```
+

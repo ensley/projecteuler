@@ -1,0 +1,62 @@
+---
+draft: yes
+title: 'Problem 5: Smallest multiple'
+author: John Ensley
+date: '2018-07-03'
+slug: '005'
+categories: []
+tags: [gcd, lcm]
+weight: -5
+hidedate: true
+---
+
+
+
+<div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=5">Problem</a></h1>
+<blockquote>
+<p>2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.</p>
+<p>What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>This problem boils down to finding the <a href="https://en.wikipedia.org/wiki/Least_common_multiple">least common multiple</a> of all numbers from 1 to 20. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">The least common multiple, or LCM, of two integers <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> is the smallest positive integer that is divisible by both <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</span> There are many ways to calculate the LCM for a set of integers, but one of the simpler ones is to write it in terms of the <a href="https://en.wikipedia.org/wiki/Greatest_common_divisor">greatest common divisor</a>, or GCD. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">The greatest common divisor, or GCD, of two integers <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> is the largest positive integer that divides both <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</span></p>
+<p>The relationship between the LCM and the GCD is as follows:</p>
+<p><span class="math display">\[
+LCM(a, b) = \frac{|a \cdot b|}{GCD(a, b)}.
+\]</span></p>
+<p>The GCD can be calculated very efficiently using <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclid’s algorithm</a>. This algorithm takes advantage of the fact that the GCD doesn’t change if you replace <span class="math inline">\(b\)</span> with <span class="math inline">\(b \; \textrm{mod} \; a\)</span>.</p>
+<pre class="marginfigure"><code>Or, if $a$ is larger than $b$, replace $a$ with $a \; \textrm{mod} \; b$.</code></pre>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<pre class="r"><code>gcd &lt;- function(a, b) {
+  while(b != 0) {
+    t &lt;- b
+    b &lt;- a %% b
+    a &lt;- t
+  }
+  a
+}</code></pre>
+<pre class="r"><code>lcm &lt;- function(a, b) {
+  a / gcd(a, b) * b
+}</code></pre>
+<pre class="r"><code>lcm &lt;- function(v) {
+  n &lt;- length(v)
+  if (n &lt; 2) stop(&#39;Must supply a vector of at least 2 integers&#39;)
+  
+  x &lt;- v[1]
+  for (i in 2:n) {
+    x &lt;- x / gcd(x, v[i]) * v[i]
+  }
+  x
+}</code></pre>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>microbenchmark::microbenchmark(lcm(1:20))</code></pre>
+<pre><code>## Unit: microseconds
+##       expr    min      lq     mean  median      uq      max neval
+##  lcm(1:20) 15.916 16.9725 177.0486 17.2335 17.4895 15979.01   100</code></pre>
+</div>

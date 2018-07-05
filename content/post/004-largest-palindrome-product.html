@@ -1,5 +1,4 @@
 ---
-draft: yes
 title: 'Problem 4: Largest palindrome product'
 author: John Ensley
 date: '2018-06-29'
@@ -8,6 +7,7 @@ categories: []
 tags: []
 weight: -4
 hidedate: true
+draft: false
 ---
 
 
@@ -74,15 +74,15 @@ hidedate: true
                                          control = list(warmup = 10)))</code></pre>
 <pre><code>## Unit: relative
 ##                    expr      min       lq      mean   median       uq
-##  is_palindrome1(456654) 2.722163 2.730948 0.1910853 2.671029 2.258436
-##  is_palindrome2(456654) 3.296925 3.565058 0.4333059 3.403655 2.778436
+##  is_palindrome1(456654) 2.756240 2.802989 0.1937111 2.765600 2.229665
+##  is_palindrome2(456654) 3.224110 3.461161 0.3988323 3.351486 2.691635
 ##  is_palindrome3(456654) 1.000000 1.000000 1.0000000 1.000000 1.000000
-##  is_palindrome4(456654) 1.051432 1.099485 0.3358114 1.058890 1.071605
+##  is_palindrome4(456654) 1.076474 1.101936 0.3605817 1.100749 1.083980
 ##        max neval
-##  0.1476704   100
-##  0.3808497   100
+##  0.1494288   100
+##  0.3498861   100
 ##  1.0000000   100
-##  0.3227303   100</code></pre>
+##  0.3460987   100</code></pre>
 <p>Note that the reported values are relative to the fastest runtime, not absolute speed. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">The runtimes for all four functions are only a few microseconds, so the actual values really aren’t that important.</span> <code>is_palindrome3</code> and <code>is_palindrome4</code> perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let’s try testing on a non-palindrome as well.</p>
 <pre class="r"><code>(m_pal &lt;- microbenchmark::microbenchmark(is_palindrome1(468841),
                                          is_palindrome2(468841),
@@ -92,15 +92,15 @@ hidedate: true
                                          control = list(warmup = 10)))</code></pre>
 <pre><code>## Unit: relative
 ##                    expr      min       lq     mean   median       uq
-##  is_palindrome1(468841) 5.683725 5.349912 5.183559 5.139792 5.008589
-##  is_palindrome2(468841) 6.526846 6.096673 5.917937 5.816645 5.620859
-##  is_palindrome3(468841) 2.026846 1.843082 1.844823 1.843628 1.816871
+##  is_palindrome1(468841) 5.955383 5.589655 5.220930 4.993351 4.725338
+##  is_palindrome2(468841) 7.124151 6.618534 5.837376 5.906169 5.552365
+##  is_palindrome3(468841) 2.279340 2.240517 2.021452 2.004433 1.935135
 ##  is_palindrome4(468841) 1.000000 1.000000 1.000000 1.000000 1.000000
-##       max neval
-##  6.563069   100
-##  6.987646   100
-##  2.226051   100
-##  1.000000   100</code></pre>
+##        max neval
+##  7.1341945   100
+##  3.7891999   100
+##  0.9379261   100
+##  1.0000000   100</code></pre>
 <p>As we would expect, <code>is_palindrome4</code> performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes. Let’s go with <code>is_palindrome4</code> as our final answer.</p>
 <p>The next step is to find the largest palindrome product. Again, the general idea is to iterate through all products <span class="math inline">\(ab\)</span> where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are three-digit numbers. There are a couple of optimizations that minimize the number of times we’ll need to call <code>is_palindrome4</code>. First of all, because the largest palindrome will likely be the product of two larger three-digit numbers, we can start with <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> equal to 999 and move backwards to 100. That way we’ll probably encounter the largest palindrome sooner.</p>
 <p>Second, and more importantly, we don’t need to check whether every single <span class="math inline">\(ab\)</span> is a palindrome. If <span class="math inline">\(ab\)</span> is less than the largest palindrome we’ve found so far, then we don’t care if it is also a palindrome.</p>
@@ -123,7 +123,7 @@ hidedate: true
 <h1>Timing</h1>
 <pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p4(), unit = &#39;ms&#39;) )</code></pre>
 <pre><code>## Unit: milliseconds
-##  expr      min       lq     mean  median       uq      max neval
-##  p4() 29.18489 31.42734 34.05066 32.4196 34.78427 60.60575   100</code></pre>
-<p>The solution takes about 32.4 milliseconds. If the predicates in the <code>if</code> statement were reversed, i.e. <code>if (is_palindrome4(x) &amp;&amp; x &gt; largest)</code>, it would take about 2 seconds, or roughly 50 times longer.</p>
+##  expr      min       lq    mean   median       uq     max neval
+##  p4() 29.04867 29.63747 30.5321 30.17895 31.30316 33.9167   100</code></pre>
+<p>The solution takes about 30.2 milliseconds. If the predicates in the <code>if</code> statement were reversed, i.e. <code>if (is_palindrome4(x) &amp;&amp; x &gt; largest)</code>, it would take about 2 seconds, or roughly 50 times longer.</p>
 </div>
