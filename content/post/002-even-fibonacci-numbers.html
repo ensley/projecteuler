@@ -3,6 +3,7 @@ title: 'Problem 2: Even Fibonacci numbers'
 author: John Ensley
 date: '2018-06-26'
 slug: 002
+tags: [Fibonacci]
 hidedate: yes
 weight: -2
 draft: no
@@ -66,8 +67,8 @@ F(k) = 4F(k-3) + F(k-6).
                                      p2.2 = problem002.2(4000000),
                                      unit = &#39;ms&#39;))</code></pre>
 <pre><code>## Unit: milliseconds
-##  expr      min        lq       mean    median        uq      max neval
-##  p2.1 0.006094 0.0081715 0.01170507 0.0116205 0.0122770 0.048035   100
-##  p2.2 0.001365 0.0018635 0.00269092 0.0023685 0.0026395 0.031393   100</code></pre>
-<p>The solution takes about 0.002 milliseconds. Taking advantage of the recurrence relation sped up the (already very fast) runtime by about 5x.</p>
+##  expr      min        lq       mean   median        uq      max neval
+##  p2.1 0.006189 0.0065560 0.00723859 0.006751 0.0073075 0.020194   100
+##  p2.2 0.001320 0.0014005 0.00151454 0.001455 0.0015410 0.003307   100</code></pre>
+<p>The solution takes about 0.001 milliseconds. Taking advantage of the recurrence relation sped up the (already very fast) runtime by about 5x.</p>
 </div>

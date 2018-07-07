@@ -4,7 +4,7 @@ author: John Ensley
 date: '2018-06-29'
 slug: 004
 categories: []
-tags: []
+tags: [palindrome]
 weight: -4
 hidedate: true
 draft: false

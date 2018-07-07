@@ -4,7 +4,7 @@ author: John Ensley
 date: '2018-06-27'
 slug: 003
 categories: []
-tags: []
+tags: [prime factorization, sieve of Eratosthenes]
 hidedate: true
 weight: -3
 draft: false

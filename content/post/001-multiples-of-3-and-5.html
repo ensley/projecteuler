@@ -3,6 +3,7 @@ title: 'Problem 1: Multiples of 3 and 5'
 author: John Ensley
 date: '2018-06-26'
 slug: 001
+tags: [multiples, fizzbuzz]
 hidedate: yes
 draft: no
 weight: -1
@@ -43,7 +44,7 @@ weight: -1
 <h1>Timing</h1>
 <pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p1 = problem1(1000), unit = &#39;ms&#39;) )</code></pre>
 <pre><code>## Unit: milliseconds
-##  expr      min       lq      mean    median       uq     max neval
-##    p1 0.032335 0.033389 0.1751967 0.0338695 0.034486 14.0905   100</code></pre>
-<p>The solution takes about 0.03 milliseconds.</p>
+##  expr      min        lq      mean    median        uq      max neval
+##    p1 0.034683 0.0354675 0.1791402 0.0358245 0.0364005 14.29492   100</code></pre>
+<p>The solution takes about 0.04 milliseconds.</p>
 </div>

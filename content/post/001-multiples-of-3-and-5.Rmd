@@ -3,6 +3,7 @@ title: 'Problem 1: Multiples of 3 and 5'
 author: John Ensley
 date: '2018-06-26'
 slug: 001
+tags: [multiples, fizzbuzz]
 hidedate: yes
 draft: no
 weight: -1

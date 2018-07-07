@@ -3,6 +3,7 @@ title: 'Problem 2: Even Fibonacci numbers'
 author: John Ensley
 date: '2018-06-26'
 slug: 002
+tags: [Fibonacci]
 hidedate: yes
 weight: -2
 draft: no
