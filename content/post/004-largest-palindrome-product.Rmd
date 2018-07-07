@@ -2,7 +2,7 @@
 title: 'Problem 4: Largest palindrome product'
 author: John Ensley
 date: '2018-06-29'
-slug: '004'
+slug: 004
 categories: []
 tags: []
 weight: -4

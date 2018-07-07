@@ -2,7 +2,7 @@
 title: 'Problem 5: Smallest multiple'
 author: John Ensley
 date: '2018-07-03'
-slug: '005'
+slug: 005
 categories: []
 tags: [gcd, lcm]
 weight: -5
@@ -72,6 +72,6 @@ GCD(a, b, c) = GCD(a, GCD(b, c)).
 <pre class="r"><code>(m &lt;- microbenchmark::microbenchmark(lcm(1:20), unit = &#39;ms&#39;))</code></pre>
 <pre><code>## Unit: milliseconds
 ##       expr      min        lq       mean   median       uq      max neval
-##  lcm(1:20) 0.015823 0.0165245 0.01793784 0.017098 0.018025 0.048847   100</code></pre>
+##  lcm(1:20) 0.016138 0.0169525 0.01861746 0.017607 0.018528 0.048399   100</code></pre>
 <p>The solution takes about 0.02 milliseconds.</p>
 </div>

@@ -2,7 +2,7 @@
 title: 'Problem 5: Smallest multiple'
 author: John Ensley
 date: '2018-07-03'
-slug: '005'
+slug: 005
 categories: []
 tags: [gcd, lcm]
 weight: -5
