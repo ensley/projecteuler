@@ -7,6 +7,7 @@ categories: []
 tags: [gcd, lcm]
 weight: -5
 hidedate: true
+draft: false
 ---
 
 #[Problem](https://projecteuler.net/problem=5)
@@ -25,10 +26,11 @@ $$
 LCM(a, b) = \frac{|a \cdot b|}{GCD(a, b)}.
 $$
 
-The GCD can be calculated very efficiently using [Euclid's algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). This algorithm takes advantage of the fact that the GCD doesn't change if you replace $b$ with $b \; \textrm{mod} \; a$. `r tufte::margin_note('Or, if $a$ is larger than $b$, replace $a$ with $a \; \textrm{mod} \; b$.')`
+The GCD can be calculated very efficiently using [Euclid's algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). This algorithm takes advantage of the fact that the GCD doesn't change if you replace $b$ with $b \; \textrm{mod} \; a$. `r tufte::margin_note('Or vice versa if $a$ is larger than $b$.')`
 
 # Implementation
 
+First, we implement the GCD function.
 
 ```{r}
 gcd <- function(a, b) {
@@ -39,15 +41,26 @@ gcd <- function(a, b) {
   }
   a
 }
+
+gcd(6, 27)
 ```
 
-
+Then the LCM is very simple:
 
 ```{r}
 lcm <- function(a, b) {
   a / gcd(a, b) * b
 }
+lcm(6, 27)
 ```
+
+This works for the LCM of two values, but the relationship between LCM and GCD does not hold for three or more values. We need to find the LCM of all integers from 1 to 20. To do this, we can use the fact that
+
+$$
+GCD(a, b, c) = GCD(a, GCD(b, c)).
+$$
+
+By iteratively finding the GCD of each pair of integers, we will arrive at the overall GCD.
 
 ```{r}
 lcm <- function(v) {
@@ -62,37 +75,17 @@ lcm <- function(v) {
 }
 ```
 
+The answer is:
 
-```{Rcpp eval=FALSE, include=FALSE}
-# include <Rcpp.h>
-using namespace Rcpp;
-
-int gcd_cpp(int a, int b)
-{
-  if (b == 0) return a;
-  else return gcd_cpp(b, a % b);
-}
-
-// [[Rcpp::export]]
-int lcm_cpp(NumericVector v)
-{
-  int n = v.size();
-  int x = v[0];
-  for (int i = 1; i < n; ++i)
-  {
-    x = x / gcd_cpp(x, v[i]) * v[i];
-  }
-  return x;
-}
+```{r}
+lcm(1:20)
 ```
-
-
-
 
 # Timing
 
 
 ```{r}
-microbenchmark::microbenchmark(lcm(1:20))
+(m <- microbenchmark::microbenchmark(lcm(1:20), unit = 'ms'))
 ```
 
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 2)` milliseconds.
