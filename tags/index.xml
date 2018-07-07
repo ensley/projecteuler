@@ -6,10 +6,28 @@
     <description>Recent content in Tags on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://john-ensley.com/projecteuler/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fibonacci</title>
+      <link>http://john-ensley.com/projecteuler/tags/fibonacci/</link>
+      <pubDate>Tue, 26 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/fibonacci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fizzbuzz</title>
+      <link>http://john-ensley.com/projecteuler/tags/fizzbuzz/</link>
+      <pubDate>Tue, 26 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/fizzbuzz/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Gcd</title>
@@ -26,6 +44,42 @@
       <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>http://john-ensley.com/projecteuler/tags/lcm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Multiples</title>
+      <link>http://john-ensley.com/projecteuler/tags/multiples/</link>
+      <pubDate>Tue, 26 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/multiples/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Palindrome</title>
+      <link>http://john-ensley.com/projecteuler/tags/palindrome/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/palindrome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Prime Factorization</title>
+      <link>http://john-ensley.com/projecteuler/tags/prime-factorization/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/prime-factorization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sieve of Eratosthenes</title>
+      <link>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</guid>
       <description></description>
     </item>
     

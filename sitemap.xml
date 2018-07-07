@@ -44,6 +44,18 @@
   </url>
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/tags/fibonacci/</loc>
+    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/tags/fizzbuzz/</loc>
+    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/tags/gcd/</loc>
     <lastmod>2018-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -56,14 +68,38 @@
   </url>
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/tags/multiples/</loc>
+    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/tags/palindrome/</loc>
+    <lastmod>2018-06-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/post/</loc>
     <lastmod>2018-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/tags/prime-factorization/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/tags/</loc>
-    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

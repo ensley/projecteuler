@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Prime Factorization on A Hugo website</title>
+    <link>http://john-ensley.com/projecteuler/tags/prime-factorization/</link>
+    <description>Recent content in Prime Factorization on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 27 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://john-ensley.com/projecteuler/tags/prime-factorization/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Problem 3: Largest prime factor</title>
+      <link>http://john-ensley.com/projecteuler/3/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/3/</guid>
+      <description>Problem  The prime factors of 13195 are 5, 7, 13 and 29.
+What is the largest prime factor of the number 600851475143 ?
+  Explanation Every integer greater than 1 is either a prime number or can be represented as the product of prime numbers. ⊕That’s the fundamental theorem of arithmetic. The most straightforward approach for solving this problem is to simply walk through the prime numbers less than \(n = 600851475143\) and try dividing each of them into \(n\).</description>
+    </item>
+    
+  </channel>
+</rss>

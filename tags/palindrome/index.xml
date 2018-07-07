@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Palindrome on A Hugo website</title>
+    <link>http://john-ensley.com/projecteuler/tags/palindrome/</link>
+    <description>Recent content in Palindrome on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://john-ensley.com/projecteuler/tags/palindrome/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Problem 4: Largest palindrome product</title>
+      <link>http://john-ensley.com/projecteuler/4/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/4/</guid>
+      <description>Problem  A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+Find the largest palindrome made from the product of two 3-digit numbers.
+  Explanation The overall approach for this problem is very simple: we’ll loop through all combinations of two three-digit numbers, multiply them, and see if the product is a palindrome or not.</description>
+    </item>
+    
+  </channel>
+</rss>
