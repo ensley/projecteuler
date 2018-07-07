@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+<title>A Hugo website - Problem 4: Largest palindrome product</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="A Hugo website">
+<meta name="generator" content="Hugo 0.42.1" />
+
+  
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../css/tuftesque.css">
+<style>
+body {
+  
+    background-color: #fffff8;
+  
+}
+</style>
+
+
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="layout" class="pure-g">
+<article class="pure-u-1">
+<header class="brand">
+  <h1>
+    <a href="../">
+      <span id = "blog_logo">
+         <img src="../logo.png" alt="Blog Logo" style="height: 40px; width:40px">
+      </span>
+      
+    </a>
+  </h1>
+</header>
+
+<section>
+  <h1 class="content-title">
+  
+  <a href="../4/">Problem 4: Largest palindrome product</a>
+  
+  </h1>
+  
+  
+  
+  <span class="content-meta">
+    
+  
+  
+  
+  <i class="fa fa-user">&nbsp;</i><span class="author">
+    &nbsp;John Ensley</span> <br>
+    
+  
+  
+  
+  
+  
+  &nbsp;<i class="fa fa-clock-o"></i>
+    &nbsp;5 min read
+  
+  
+  
+    </span>
+    
+    
+    </section>
+
+
+<section><div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=4">Problem</a></h1>
+<blockquote>
+<p>A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.</p>
+<p>Find the largest palindrome made from the product of two 3-digit numbers.</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>The overall approach for this problem is very simple: we’ll loop through all combinations of two three-digit numbers, multiply them, and see if the product is a palindrome or not. If it is a palindrome, and it’s bigger than any palindrome we’ve seen so far, then we make a note of it. At the end we’ll be left with the largest palindrome product of 3-digit numbers.</p>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<p>There are 900 three-digit numbers, so iterating through all combinations would require <span class="math inline">\(900*900 = 810,000\)</span> calls to some palindrome-checking function. This could potentially take a long time. For efficiency, we should consider two things. First, we should try to cut down on the number of times we need to check if a number is a palindrome. Second, we should be smart about how we check for palindrome-ness.</p>
+<p>Let’s tackle the palindrome function first. There are a few ways we could check whether a number <span class="math inline">\(x\)</span> is a palindrome. This function converts <span class="math inline">\(x\)</span> to a vector of digits and then compares it to the reversed version of itself.</p>
+<pre class="r"><code>is_palindrome1 &lt;- function(x) {
+  digit_vector &lt;- as.numeric(strsplit(as.character(x), split = &#39;&#39;)[[1]])
+  all(digit_vector == rev(digit_vector))
+}</code></pre>
+<p>This one builds up a vector of digits using modular arithmetic instead of converting to a string and back to a number as in <code>is_palindrome1</code>. It again compares the vector to its reverse.</p>
+<pre class="r"><code>is_palindrome2 &lt;- function(x) {
+  ndigits &lt;- floor(log10(x)) + 1
+  digits &lt;- rep(NA, ndigits)
+  for (i in rev(seq_along(digits))) {
+    digits[i] &lt;- x %% 10
+    x &lt;- x %/% 10
+  }
+  all(digits == rev(digits))
+}</code></pre>
+<p>Instead of building up a vector of digits, this one builds up a reversed integer. For example, if <span class="math inline">\(x = 1234\)</span>, <code>reversed</code> will become <span class="math inline">\(4321\)</span>. Then <span class="math inline">\(x\)</span> and <code>reversed</code> are compared.</p>
+<pre class="r"><code>is_palindrome3 &lt;- function(x) {
+  n &lt;- x
+  reversed &lt;- 0
+  while (x &gt; 0) {
+    remainder &lt;- x %% 10
+    reversed &lt;- 10 * reversed + remainder
+    x &lt;- x %/% 10
+  }
+  n == reversed
+}</code></pre>
+<p>In this one, we aren’t reversing <span class="math inline">\(x\)</span>, but instead we compare the first and last digits of <span class="math inline">\(x\)</span>. If they are not equal, then we already know <span class="math inline">\(x\)</span> is not a palindrome and we can exit the function without checking the rest. If they are equal, we remove the first and last digit from <span class="math inline">\(x\)</span> and perform the comparison again on this new <span class="math inline">\(x\)</span>.</p>
+<pre class="r"><code>is_palindrome4 &lt;- function(x) {
+  d &lt;- 10^(floor(log10(x)))
+  r &lt;- 10
+  while (x &gt; 0) {
+    dig_first &lt;- x %/% d
+    dig_last &lt;- x %% r
+    if (dig_first != dig_last) return(FALSE)
+    x &lt;- x %% d %/% r
+    d &lt;- d / 100
+  }
+  return(TRUE)
+}</code></pre>
+<p><code>is_palindrome4</code> has the advantage of potentially exiting early, although there are many more modular arithmetic calculations needed than in <code>is_palindrome3</code>. I’m not sure how fast R can perform numeric to string conversions, so I don’t know how well <code>is_palindrome1</code> will perform compared to <code>is_palindrome2</code>. Let’s find out! First let’s test all four functions on a palindromic number. Since products of 3-digit numbers must be 5 or 6 digits, we won’t worry about testing very large numbers.</p>
+<pre class="r"><code>(m_pal &lt;- microbenchmark::microbenchmark(is_palindrome1(456654),
+                                         is_palindrome2(456654),
+                                         is_palindrome3(456654),
+                                         is_palindrome4(456654),
+                                         unit = &#39;relative&#39;,
+                                         control = list(warmup = 10)))</code></pre>
+<pre><code>## Unit: relative
+##                    expr      min       lq      mean   median       uq
+##  is_palindrome1(456654) 2.894984 3.117575 0.9712665 3.145523 2.089354
+##  is_palindrome2(456654) 3.345350 4.318890 2.0250298 4.266385 2.745455
+##  is_palindrome3(456654) 1.000000 1.000000 1.0000000 1.000000 1.000000
+##  is_palindrome4(456654) 1.045977 1.117575 5.7738489 1.125305 1.124641
+##        max neval
+##  0.7684217   100
+##  1.8923992   100
+##  1.0000000   100
+##  6.3641837   100</code></pre>
+<p>Note that the reported values are relative to the fastest runtime, not absolute speed. <label for="tufte-mn-" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-" class="margin-toggle"><span class="marginnote">The runtimes for all four functions are only a few microseconds, so the actual values really aren’t that important.</span> <code>is_palindrome3</code> and <code>is_palindrome4</code> perform just about equally well, and the other two are 2 to 3 times slower. For the sake of completeness, let’s try testing on a non-palindrome as well.</p>
+<pre class="r"><code>(m_pal &lt;- microbenchmark::microbenchmark(is_palindrome1(468841),
+                                         is_palindrome2(468841),
+                                         is_palindrome3(468841),
+                                         is_palindrome4(468841),
+                                         unit = &#39;relative&#39;,
+                                         control = list(warmup = 10)))</code></pre>
+<pre><code>## Unit: relative
+##                    expr      min       lq     mean   median       uq
+##  is_palindrome1(468841) 5.960478 5.563232 5.262055 5.208215 4.920432
+##  is_palindrome2(468841) 7.009191 6.232240 5.957573 5.852337 5.616568
+##  is_palindrome3(468841) 2.188419 1.983216 1.902878 1.935907 1.870334
+##  is_palindrome4(468841) 1.000000 1.000000 1.000000 1.000000 1.000000
+##        max neval
+##  6.5058116   100
+##  7.3134269   100
+##  0.9845691   100
+##  1.0000000   100</code></pre>
+<p>As we would expect, <code>is_palindrome4</code> performs the best because it quits as soon as it encounters digits that do not match. This will probably come in handy, since there are more non-palindromes than palindromes. Let’s go with <code>is_palindrome4</code> as our final answer.</p>
+<p>The next step is to find the largest palindrome product. Again, the general idea is to iterate through all products <span class="math inline">\(ab\)</span> where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are three-digit numbers. There are a couple of optimizations that minimize the number of times we’ll need to call <code>is_palindrome4</code>. First of all, because the largest palindrome will likely be the product of two larger three-digit numbers, we can start with <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> equal to 999 and move backwards to 100. That way we’ll probably encounter the largest palindrome sooner.</p>
+<p>Second, and more importantly, we don’t need to check whether every single <span class="math inline">\(ab\)</span> is a palindrome. If <span class="math inline">\(ab\)</span> is less than the largest palindrome we’ve found so far, then we don’t care if it is also a palindrome.</p>
+<pre class="r"><code>p4 &lt;- function() {
+  largest &lt;- -Inf
+  for (a in 999:100) {
+    for (b in a:100) {
+      x &lt;- a*b
+      if (x &gt; largest &amp;&amp; is_palindrome4(x)) {
+        largest &lt;- x
+      }
+    }
+  }
+  largest
+}</code></pre>
+<pre class="r"><code>p4()</code></pre>
+<pre><code>## [1] 906609</code></pre>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p4(), unit = &#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##  expr      min       lq     mean   median       uq      max neval
+##  p4() 30.29072 31.05463 32.14498 32.00477 32.90234 35.95468   100</code></pre>
+<p>The solution takes about 32 milliseconds. If the predicates in the <code>if</code> statement were reversed, i.e. <code>if (is_palindrome4(x) &amp;&amp; x &gt; largest)</code>, it would take about 2 seconds, or roughly 50 times longer.</p>
+</div>
+</section>
+<section>
+  
+
+  
+
+
+
+  
+
+
+      
+  <footer class="page-footer">
+		<hr>
+		<ul class="page-footer-menu">
+		
+		</ul>
+
+  
+
+	<div class="copyright">
+	<p>
+    
+      &copy;2018
+    .
+    All rights reserved.
+    
+  </p>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</footer>
+
+</section>
+</article>
+</div>
+</body>
+</html>

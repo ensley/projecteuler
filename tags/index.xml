@@ -6,9 +6,28 @@
     <description>Recent content in Tags on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://john-ensley.com/projecteuler/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Gcd</title>
+      <link>http://john-ensley.com/projecteuler/tags/gcd/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/gcd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lcm</title>
+      <link>http://john-ensley.com/projecteuler/tags/lcm/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/lcm/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

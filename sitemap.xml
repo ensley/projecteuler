@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/5/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/4/</loc>
+    <lastmod>2018-06-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/3/</loc>
     <lastmod>2018-06-27T00:00:00+00:00</lastmod>
   </url>
@@ -24,7 +34,7 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/</loc>
-    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -34,13 +44,26 @@
   </url>
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/tags/gcd/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://john-ensley.com/projecteuler/tags/lcm/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/post/</loc>
-    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://john-ensley.com/projecteuler/tags/</loc>
+    <lastmod>2018-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

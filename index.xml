@@ -6,10 +6,32 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://john-ensley.com/projecteuler/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Problem 5: Smallest multiple</title>
+      <link>http://john-ensley.com/projecteuler/5/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/5/</guid>
+      <description>Problem  2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+  Explanation This problem boils down to finding the least common multiple of all numbers from 1 to 20. ⊕The least common multiple, or LCM, of two integers \(a\) and \(b\) is the smallest positive integer that is divisible by both \(a\) and \(b\).</description>
+    </item>
+    
+    <item>
+      <title>Problem 4: Largest palindrome product</title>
+      <link>http://john-ensley.com/projecteuler/4/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/4/</guid>
+      <description>Problem  A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+Find the largest palindrome made from the product of two 3-digit numbers.
+  Explanation The overall approach for this problem is very simple: we’ll loop through all combinations of two three-digit numbers, multiply them, and see if the product is a palindrome or not.</description>
+    </item>
     
     <item>
       <title>Problem 3: Largest prime factor</title>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lcm on A Hugo website</title>
+    <link>http://john-ensley.com/projecteuler/tags/lcm/</link>
+    <description>Recent content in Lcm on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://john-ensley.com/projecteuler/tags/lcm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Problem 5: Smallest multiple</title>
+      <link>http://john-ensley.com/projecteuler/5/</link>
+      <pubDate>Tue, 03 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/5/</guid>
+      <description>Problem  2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+  Explanation This problem boils down to finding the least common multiple of all numbers from 1 to 20. ⊕The least common multiple, or LCM, of two integers \(a\) and \(b\) is the smallest positive integer that is divisible by both \(a\) and \(b\).</description>
+    </item>
+    
+  </channel>
+</rss>
