@@ -1,0 +1,59 @@
+---
+title: 'Problem 6: Sum square difference'
+author: John Ensley
+date: '2018-07-06'
+slug: 6
+categories: []
+tags:
+  - sum of squares
+weight: -6
+hidedate: true
+draft: false
+---
+
+# [Problem](https://projecteuler.net/problem=6)
+
+> The sum of the squares of the first ten natural numbers is,
+
+$$
+1^2 + 2^2 + \dots + 10^2 = 385
+$$
+
+> The square of the sum of the first ten natural numbers is,
+
+$$
+(1 + 2 + ... + 10)^2 = 55^2 = 3025
+$$
+
+> Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.
+>
+> Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+
+# Explanation
+
+This one is trivially easy. Just do the calculation. You could be clever about using the fact that
+
+$$
+\sum_{i=1}^n x_i = \frac{n(n+1)}{2}
+$$
+
+and other such relations, but just calculating the answer using `sum()` is so fast that it's not even worth it.
+
+# Implementation
+
+```{r}
+p6 <- function(n) {
+  integers <- 1:n
+  sum(integers)^2 - sum(integers^2)
+}
+
+p6(100)
+```
+
+# Timing
+
+```{r}
+(m <- microbenchmark::microbenchmark(p6(100), unit = 'ms'))
+```
+
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 3)` milliseconds.
