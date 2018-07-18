@@ -6,10 +6,21 @@
     <description>Recent content in Posts on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://john-ensley.com/projecteuler/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Problem 7: 10001st prime</title>
+      <link>http://john-ensley.com/projecteuler/7/</link>
+      <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/7/</guid>
+      <description>Problem  By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+What is the 10 001st prime number?
+  Explanation We’ve already implemented the sieve of Eratosthenes, a method for generating all primes less than some \(n\). In order to use that, we’ll need to know some value of \(n\) such that there will be at least 10,001 prime numbers less than \(n\).</description>
+    </item>
     
     <item>
       <title>Problem 6: Sum square difference</title>

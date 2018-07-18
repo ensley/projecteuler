@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+<title>A Hugo website - Problem 7: 10001st prime</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="A Hugo website">
+<meta name="generator" content="Hugo 0.42.1" />
+
+  
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../css/tuftesque.css">
+<style>
+body {
+  
+    background-color: #fffff8;
+  
+}
+</style>
+
+
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="layout" class="pure-g">
+<article class="pure-u-1">
+<header class="brand">
+  <h1>
+    <a href="../">
+      <span id = "blog_logo">
+         <img src="../logo.png" alt="Blog Logo" style="height: 40px; width:40px">
+      </span>
+      
+    </a>
+  </h1>
+</header>
+
+<section>
+  <h1 class="content-title">
+  
+  <a href="../7/">Problem 7: 10001st prime</a>
+  
+  </h1>
+  
+  
+  
+  <span class="content-meta">
+    
+  
+  
+  
+  <i class="fa fa-user">&nbsp;</i><span class="author">
+    &nbsp;John Ensley</span> <br>
+    
+  
+  
+  
+  
+  
+  &nbsp;<i class="fa fa-clock-o"></i>
+    &nbsp;1 min read
+  
+  
+  
+    </span>
+    
+    
+    </section>
+
+
+<section><div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=7">Problem</a></h1>
+<blockquote>
+<p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+<p>What is the 10 001st prime number?</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>We’ve already implemented the <a href="../3/">sieve of Eratosthenes</a>, a method for generating all primes less than some <span class="math inline">\(n\)</span>. In order to use that, we’ll need to know some value of <span class="math inline">\(n\)</span> such that there will be at least 10,001 prime numbers less than <span class="math inline">\(n\)</span>. As it turns out, <a href="https://www.jstor.org/stable/2371291">J. Barkley Rosser</a> established just such an upper bound. For the <span class="math inline">\(n\)</span>th prime <span class="math inline">\(p_n\)</span>,</p>
+<p><span class="math display">\[
+p_n &lt; n \ln (n \ln n).
+\]</span></p>
+<p>Therefore, <span class="math inline">\(p_{10001} &lt; 10001 \ln (10001 \ln 10001) = 114319.2 &lt; 114320\)</span>.</p>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<pre class="r"><code>sieve &lt;- function(n) {
+  is_prime &lt;- c(F, rep(T, n-1))
+  for (i in 2:sqrt(n)) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] &lt;- F
+    }
+  }
+  which(is_prime)
+}</code></pre>
+<pre class="r"><code>p7 &lt;- function(n) {
+  limit &lt;- n * log(n * log(n))
+  primes &lt;- sieve(limit)
+  primes[n]
+}</code></pre>
+<pre class="r"><code>p7(10001)</code></pre>
+<pre><code>## [1] 104743</code></pre>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p7(10001), unit=&#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##       expr      min       lq     mean  median       uq      max neval
+##  p7(10001) 4.078036 4.150033 4.986363 4.23394 5.939754 9.892361   100</code></pre>
+<p>The solution takes about 4.2 milliseconds.</p>
+</div>
+</section>
+<section>
+  
+
+  
+
+
+
+  
+
+
+      
+  <footer class="page-footer">
+		<hr>
+		<ul class="page-footer-menu">
+		
+		</ul>
+
+  
+
+	<div class="copyright">
+	<p>
+    
+      &copy;2018
+    .
+    All rights reserved.
+    
+  </p>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</footer>
+
+</section>
+</article>
+</div>
+</body>
+</html>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://john-ensley.com/projecteuler/7/</loc>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://john-ensley.com/projecteuler/6/</loc>
     <lastmod>2018-07-06T00:00:00+00:00</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/</loc>
-    <lastmod>2018-07-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -86,7 +91,7 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/post/</loc>
-    <lastmod>2018-07-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -98,13 +103,13 @@
   
   <url>
     <loc>http://john-ensley.com/projecteuler/tags/primes/</loc>
-    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</loc>
-    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-07-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
