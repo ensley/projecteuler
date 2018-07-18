@@ -1,0 +1,62 @@
+---
+title: 'Problem 7: 10001st prime'
+author: John Ensley
+date: '2018-07-12'
+slug: '7'
+categories: []
+tags: [sieve of Eratosthenes, primes]
+weight: -7
+hidedate: true
+draft: true
+---
+
+# [Problem](https://projecteuler.net/problem=7)
+
+> By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+>
+> What is the 10 001st prime number?
+
+# Explanation
+
+We've already implemented the [sieve of Eratosthenes](/3/), a method for generating all primes less than some $n$. In order to use that, we'll need to know some value of $n$ such that there will be at least 10,001 prime numbers less than $n$. As it turns out, [J. Barkley Rosser](https://www.jstor.org/stable/2371291) established just such an upper bound. For the $n$th prime $p_n$,
+
+$$
+p_n < n \ln (n \ln n).
+$$
+
+Therefore, $p_{10001} < 10001 \ln (10001 \ln 10001) = 114319.2 < 114320$.
+
+# Implementation
+
+```{r}
+sieve <- function(n) {
+  is_prime <- c(F, rep(T, n-1))
+  for (i in 2:sqrt(n)) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] <- F
+    }
+  }
+  which(is_prime)
+}
+```
+
+
+```{r}
+p7 <- function(n) {
+  limit <- n * log(n * log(n))
+  primes <- sieve(limit)
+  primes[n]
+}
+```
+
+```{r}
+p7(10001)
+```
+
+# Timing
+
+```{r}
+( m <- microbenchmark::microbenchmark(p7(10001), unit='ms') )
+```
+
+The solution takes about `r round(microbenchmark:::summary.microbenchmark(m)$median, 1)` milliseconds.

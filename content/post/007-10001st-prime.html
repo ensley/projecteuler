@@ -1,0 +1,56 @@
+---
+title: 'Problem 7: 10001st prime'
+author: John Ensley
+date: '2018-07-12'
+slug: '7'
+categories: []
+tags: [sieve of Eratosthenes, primes]
+weight: -7
+hidedate: true
+draft: true
+---
+
+
+
+<div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=7">Problem</a></h1>
+<blockquote>
+<p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.</p>
+<p>What is the 10 001st prime number?</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>We’ve already implemented the <a href="/3/">sieve of Eratosthenes</a>, a method for generating all primes less than some <span class="math inline">\(n\)</span>. In order to use that, we’ll need to know some value of <span class="math inline">\(n\)</span> such that there will be at least 10,001 prime numbers less than <span class="math inline">\(n\)</span>. As it turns out, <a href="https://www.jstor.org/stable/2371291">J. Barkley Rosser</a> established just such an upper bound. For the <span class="math inline">\(n\)</span>th prime <span class="math inline">\(p_n\)</span>,</p>
+<p><span class="math display">\[
+p_n &lt; n \ln (n \ln n).
+\]</span></p>
+<p>Therefore, <span class="math inline">\(p_{10001} &lt; 10001 \ln (10001 \ln 10001) = 114319.2 &lt; 114320\)</span>.</p>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<pre class="r"><code>sieve &lt;- function(n) {
+  is_prime &lt;- c(F, rep(T, n-1))
+  for (i in 2:sqrt(n)) {
+    if (is_prime[i]) {
+      is_prime[seq(i*i, n, by = i)] &lt;- F
+    }
+  }
+  which(is_prime)
+}</code></pre>
+<pre class="r"><code>p7 &lt;- function(n) {
+  limit &lt;- n * log(n * log(n))
+  primes &lt;- sieve(limit)
+  primes[n]
+}</code></pre>
+<pre class="r"><code>p7(10001)</code></pre>
+<pre><code>## [1] 104743</code></pre>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p7(10001), unit=&#39;ms&#39;) )</code></pre>
+<pre><code>## Unit: milliseconds
+##       expr     min      lq     mean  median       uq      max neval
+##  p7(10001) 3.99255 4.12303 4.647187 4.18182 4.995918 7.648959   100</code></pre>
+<p>The solution takes about 4.2 milliseconds.</p>
+</div>
