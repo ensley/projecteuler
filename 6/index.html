@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+<head>
+<title>A Hugo website - Problem 6: Sum square difference</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="A Hugo website">
+<meta name="generator" content="Hugo 0.42.1" />
+
+  
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../css/tuftesque.css">
+<style>
+body {
+  
+    background-color: #fffff8;
+  
+}
+</style>
+
+
+
+<script>
+
+</script>
+
+
+</head>
+
+<body>
+<div id="layout" class="pure-g">
+<article class="pure-u-1">
+<header class="brand">
+  <h1>
+    <a href="../">
+      <span id = "blog_logo">
+         <img src="../logo.png" alt="Blog Logo" style="height: 40px; width:40px">
+      </span>
+      
+    </a>
+  </h1>
+</header>
+
+<section>
+  <h1 class="content-title">
+  
+  <a href="../6/">Problem 6: Sum square difference</a>
+  
+  </h1>
+  
+  
+  
+  <span class="content-meta">
+    
+  
+  
+  
+  <i class="fa fa-user">&nbsp;</i><span class="author">
+    &nbsp;John Ensley</span> <br>
+    
+  
+  
+  
+  
+  
+  &nbsp;<i class="fa fa-clock-o"></i>
+    &nbsp;1 min read
+  
+  
+  
+    </span>
+    
+    
+    </section>
+
+
+<section><div id="problem" class="section level1">
+<h1><a href="https://projecteuler.net/problem=6">Problem</a></h1>
+<blockquote>
+<p>The sum of the squares of the first ten natural numbers is,</p>
+</blockquote>
+<p><span class="math display">\[
+1^2 + 2^2 + \dots + 10^2 = 385
+\]</span></p>
+<blockquote>
+<p>The square of the sum of the first ten natural numbers is,</p>
+</blockquote>
+<p><span class="math display">\[
+(1 + 2 + ... + 10)^2 = 55^2 = 3025
+\]</span></p>
+<blockquote>
+<p>Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</p>
+<p>Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.</p>
+</blockquote>
+</div>
+<div id="explanation" class="section level1">
+<h1>Explanation</h1>
+<p>This one is trivially easy. Just do the calculation. You could be clever about using the fact that</p>
+<p><span class="math display">\[
+\sum_{i=1}^n x_i = \frac{n(n+1)}{2}
+\]</span></p>
+<p>and other such relations, but just calculating the answer using <code>sum()</code> is so fast that it’s not even worth it.</p>
+</div>
+<div id="implementation" class="section level1">
+<h1>Implementation</h1>
+<pre class="r"><code>p6 &lt;- function(n) {
+  integers &lt;- 1:n
+  sum(integers)^2 - sum(integers^2)
+}
+
+p6(100)</code></pre>
+<pre><code>## [1] 25164150</code></pre>
+</div>
+<div id="timing" class="section level1">
+<h1>Timing</h1>
+<pre class="r"><code>(m &lt;- microbenchmark::microbenchmark(p6(100), unit = &#39;ms&#39;))</code></pre>
+<pre><code>## Unit: milliseconds
+##     expr      min       lq      mean   median        uq      max neval
+##  p6(100) 0.001111 0.001144 0.1243548 0.001222 0.0013125 12.31053   100</code></pre>
+<p>The solution takes about 0.001 milliseconds.</p>
+</div>
+</section>
+<section>
+  
+
+  
+
+
+
+  
+
+
+      
+  <footer class="page-footer">
+		<hr>
+		<ul class="page-footer-menu">
+		
+		</ul>
+
+  
+
+	<div class="copyright">
+	<p>
+    
+      &copy;2018
+    .
+    All rights reserved.
+    
+  </p>
+</div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+</footer>
+
+</section>
+</article>
+</div>
+</body>
+</html>

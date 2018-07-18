@@ -6,10 +6,23 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://john-ensley.com/projecteuler/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Problem 6: Sum square difference</title>
+      <link>http://john-ensley.com/projecteuler/6/</link>
+      <pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/6/</guid>
+      <description>Problem  The sum of the squares of the first ten natural numbers is,
+ \[ 1^2 + 2^2 + \dots + 10^2 = 385 \]
+ The square of the sum of the first ten natural numbers is,
+ \[ (1 + 2 + ... + 10)^2 = 55^2 = 3025 \]
+ Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.</description>
+    </item>
     
     <item>
       <title>Problem 5: Smallest multiple</title>

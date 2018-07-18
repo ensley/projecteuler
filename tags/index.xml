@@ -75,11 +75,29 @@
     </item>
     
     <item>
+      <title>Primes</title>
+      <link>http://john-ensley.com/projecteuler/tags/primes/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/primes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Sieve of Eratosthenes</title>
       <link>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</link>
       <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>http://john-ensley.com/projecteuler/tags/sieve-of-eratosthenes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sum of Squares</title>
+      <link>http://john-ensley.com/projecteuler/tags/sum-of-squares/</link>
+      <pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://john-ensley.com/projecteuler/tags/sum-of-squares/</guid>
       <description></description>
     </item>
     
