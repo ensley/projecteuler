@@ -7,7 +7,7 @@ categories: []
 tags: [sieve of Eratosthenes, primes]
 weight: -7
 hidedate: true
-draft: true
+draft: false
 ---
 
 # [Problem](https://projecteuler.net/problem=7)

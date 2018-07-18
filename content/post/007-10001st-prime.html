@@ -7,7 +7,7 @@ categories: []
 tags: [sieve of Eratosthenes, primes]
 weight: -7
 hidedate: true
-draft: true
+draft: false
 ---
 
 
@@ -50,7 +50,7 @@ p_n &lt; n \ln (n \ln n).
 <h1>Timing</h1>
 <pre class="r"><code>( m &lt;- microbenchmark::microbenchmark(p7(10001), unit=&#39;ms&#39;) )</code></pre>
 <pre><code>## Unit: milliseconds
-##       expr     min      lq     mean  median       uq      max neval
-##  p7(10001) 3.99255 4.12303 4.647187 4.18182 4.995918 7.648959   100</code></pre>
+##       expr      min       lq     mean  median       uq      max neval
+##  p7(10001) 4.078036 4.150033 4.986363 4.23394 5.939754 9.892361   100</code></pre>
 <p>The solution takes about 4.2 milliseconds.</p>
 </div>
